@@ -1,16 +1,17 @@
 package com.lxy.flinkdemo;
 
-import com.lxy.util.KafkaUtil;
-import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-public class FlinkKafka {
+public class FlinkCusSourceDemo {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
-        DataStreamSource<String> kafka_source = env.fromSource(KafkaUtil.getKafkaSource(), WatermarkStrategy.noWatermarks(), "kafka_source");
-        kafka_source.print();
+
+        DataStreamSource<String> stringDataStreamSource = env.addSource(new CusSource());
+
+        stringDataStreamSource.print();
+
         env.execute();
     }
 }
